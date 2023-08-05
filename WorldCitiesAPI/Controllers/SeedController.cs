@@ -116,8 +116,6 @@ namespace WorldCitiesAPI.Controllers
                 // retrieve country id by countryName 
                 var countryId = countriesByName[countryName].Id;
 
-                Console.WriteLine($"This is the countryId {countryId} and country {name}");
-
                 // skip this city if it already exists in the database 
                 if (cities.ContainsKey(new CityKey { Name = name, Lat = lat, Lon = lon, CountryId = countryId }))
                 {
