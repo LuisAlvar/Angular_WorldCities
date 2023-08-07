@@ -130,7 +130,6 @@ namespace WorldCitiesAPI.Controllers
                 var city = new City
                 {
                     Name = name,
-                    name
                     Lat = lat,
                     Lon = lon,
                     CountryId = countryId
