@@ -4,8 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using System.Runtime;
 using System.Security;
+using System.Collections.Concurrent;
 using WorldCitiesAPI.Data;
 using WorldCitiesAPI.Data.Models;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace WorldCitiesAPI.Controllers
 {
@@ -46,11 +49,11 @@ namespace WorldCitiesAPI.Controllers
             int numberOfCountriesAdded = 0;
             int numberOfCitiesAdded = 0;
 
-            //create a lookup dictionary 
-            //containing all the countires alredy existing 
-            //into the Database (it will be empty on first run).
+            // create a lookup dictionary 
+            // containing all the countires alredy existing 
+            // into the Database (it will be empty on first run).
             var countriesByName = _context.Countries.AsNoTracking().ToDictionary(x => x.Name, StringComparer.OrdinalIgnoreCase);
-
+    
             //iterates through all rows, skipping the first one
             for (int nRow = 2; nRow < nEndRow; nRow++)
             {
@@ -87,8 +90,9 @@ namespace WorldCitiesAPI.Controllers
             // save all the countries into the Database
             if (numberOfCountriesAdded > 0)
             {
-                //await _context.SaveChangesAsync();  
+                await _context.SaveChangesAsync();  
             }
+
 
             // create a lookup dictionary 
             // containing all the cities already existing 
@@ -140,7 +144,7 @@ namespace WorldCitiesAPI.Controllers
 
             if (numberOfCitiesAdded > 0)
             {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-                //await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();app
             }
 
             return new JsonResult(new {
