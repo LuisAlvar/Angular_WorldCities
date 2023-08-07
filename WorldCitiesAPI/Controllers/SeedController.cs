@@ -130,6 +130,7 @@ namespace WorldCitiesAPI.Controllers
                 var city = new City
                 {
                     Name = name,
+                    name
                     Lat = lat,
                     Lon = lon,
                     CountryId = countryId
@@ -144,7 +145,7 @@ namespace WorldCitiesAPI.Controllers
 
             if (numberOfCitiesAdded > 0)
             {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-                await _context.SaveChangesAsync();app
+                await _context.SaveChangesAsync();
             }
 
             return new JsonResult(new {
