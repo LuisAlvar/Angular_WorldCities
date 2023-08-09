@@ -7,9 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { AngularMaterialModule } from './angular-material.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { CitiesComponent } from './cities/cities.component';
@@ -23,7 +21,7 @@ import { CitiesComponent } from './cities/cities.component';
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule,
-    MatButtonModule, MatIconModule, MatToolbarModule
+    AngularMaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

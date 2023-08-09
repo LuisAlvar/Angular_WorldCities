@@ -11,12 +11,12 @@ import { City } from './city';
 })
 
 export class CitiesComponent implements OnInit {
+  public displayedColumns: string[] = ['id', 'name', 'lat', 'lon'];
   public cities!: City[]
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', 'https://localhost:4200/');
 
     this.http.get<City[]>(environment.baseUrl + '/api/cities')
       .subscribe(result => {
