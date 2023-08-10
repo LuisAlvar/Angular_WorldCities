@@ -19,9 +19,15 @@ namespace WorldCitiesAPI.Controllers
         }
 
         // GET: api/cities
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<City>>> GetCities() {
+        //    return await _context.Cities.ToListAsync();
+        //}
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<City>>> GetCities() {
-            return await _context.Cities.ToListAsync();
+        public async Task<ActionResult<IEnumerable<City>>> GetCities(int pageIndex = 0, int pageSize = 10)
+        { 
+          return await _context.Cities.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
         }
 
         // GET: api/Cities/5
