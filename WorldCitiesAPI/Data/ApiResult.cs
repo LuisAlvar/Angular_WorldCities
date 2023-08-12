@@ -72,6 +72,17 @@ namespace WorldCitiesAPI.Data
     /// Sorting Order ("ASC", "DESC", or null if none set)
     /// </summary>
     public string? SortOrder { get; set; }
+
+    /// <summary>
+    /// Filter Column name (or null if none set)
+    /// </summary>
+    public string? FilterColumn { get; set; }
+
+    /// <summary>
+    /// Filter Query string 
+    /// (to be used within the given FilterColumn)
+    /// </summary>
+    public string? FilterQuery { get; set; }
     #endregion
 
     /// <summary>
@@ -81,7 +92,15 @@ namespace WorldCitiesAPI.Data
     /// <param name="count"></param>
     /// <param name="pageIndex"></param>
     /// <param name="pageSize"></param>
-    private ApiResult(List<T> data, int count, int pageIndex, int pageSize, string? sortColumn, string? sortOrder)
+    private ApiResult(
+        List<T> data, 
+        int count, 
+        int pageIndex, 
+        int pageSize, 
+        string? sortColumn, 
+        string? sortOrder,
+        string? filterColumn, 
+        string? filterQuery)
     {
       Data = data;
       PageIndex = pageIndex;
@@ -90,6 +109,8 @@ namespace WorldCitiesAPI.Data
       TotalPages = (int) Math.Ceiling(count / (double) pageSize);
       SortColumn = sortColumn;
       SortOrder = sortOrder;
+      FilterColumn = filterColumn;
+      FilterQuery = filterQuery;
     }
 
     #region Methods
@@ -120,8 +141,25 @@ namespace WorldCitiesAPI.Data
     /// <param name="sortColumn">The sorting column name</param>
     /// <param name="sortOrder">the sorting order ("ASC" or "DESC")</param>
     /// <returns></returns>
-    public static async Task<ApiResult<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize, string? sortColumn = null, string? sortOrder = null)
+    public static async Task<ApiResult<T>> CreateAsync(
+        IQueryable<T> source, 
+        int pageIndex, 
+        int pageSize, 
+        string? sortColumn = null, 
+        string? sortOrder = null,
+        string? filterColumn = null, 
+        string? filterQuery = null)
     {
+      if (!string.IsNullOrEmpty(filterColumn) 
+                && !string.IsNullOrEmpty(filterQuery)
+                && IsValidProperty(filterColumn))
+      {
+        source = source.Where(
+            string.Format("{0}.StartsWith(@0)", 
+            filterColumn), 
+            filterQuery);
+      }
+
       var count = await source.CountAsync();
 
       source = source.Skip(pageIndex * pageSize).Take(pageSize);
@@ -134,7 +172,7 @@ namespace WorldCitiesAPI.Data
 
       var data = await source.ToListAsync();
 
-      return new ApiResult<T>(data, count, pageIndex, pageSize, sortColumn, sortOrder);
+      return new ApiResult<T>(data, count, pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
       
     }
 

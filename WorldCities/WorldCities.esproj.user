@@ -2,12 +2,7 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebuggerFlavor>LaunchJsonDebugger</DebuggerFlavor>
-    <LaunchJsonTarget>{
-  "type": "chrome",
-  "request": "launch",
-  "name": "localhost (Chrome)",
-  "url": "https://localhost:4200",
-  "webRoot": "C:\\NETProjects\\Angular\\Angular_WorldCities\\WorldCities"
-}</LaunchJsonTarget>
+    <LaunchJsonTarget>
+    </LaunchJsonTarget>
   </PropertyGroup>
 </Project>
