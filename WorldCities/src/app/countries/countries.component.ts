@@ -25,7 +25,7 @@ export class CountriesComponent implements OnInit {
   public defaultSortOrder: "asc" | "desc" = "asc";
   //filtering
   defaultFilterColumn: string = "name";
-  defaultQuer?: string;
+  filterQuery?: string;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -33,11 +33,39 @@ export class CountriesComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
+    this.loadData();
+  }
+
+  loadData(query?: string) {
+    var pageEvent = new PageEvent();
+    pageEvent.pageIndex = this.defaultPageIndex;
+    pageEvent.pageSize = this.defaultPageSize;
+    this.filterQuery = query;
+    this.getData(pageEvent);
+  }
+
+
+  getData(event: PageEvent) {
     var url = environment.baseUrl + "/api/Countries";
 
-    this.http.get<any>(url)
+    var params = new HttpParams()
+      .set("pageIndex", event.pageIndex.toString())
+      .set("pageSize", event.pageSize.toString())
+      .set("sortColumn", (this.sort) ? this.sort.active : this.defaultSortColumn)
+      .set("sortOrder", (this.sort) ? this.sort.direction : this.defaultSortOrder);
+
+    if (this.filterQuery) {
+      params = params
+        .set("filterColumn", this.defaultFilterColumn)
+        .set("filterQuery", this.filterQuery);
+    }
+
+    this.http.get<any>(url, { params })
       .subscribe(result => {
-          this.countries = new MatTableDataSource<Country>(result.data)
+        this.paginator.length = result.totalCount;
+        this.paginator.pageIndex = result.pageIndex;
+        this.paginator.pageSize = result.pageSize;
+        this.countries = new MatTableDataSource<Country>(result.data)
       }, error => console.error(error))
   }
 
