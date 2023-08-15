@@ -12,6 +12,7 @@ import { AngularMaterialModule } from './angular-material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CitiesComponent } from './cities/cities.component';
 import { CountriesComponent } from './countries/countries.component';
+import { CityEditComponent } from './cities/city-edit.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CountriesComponent } from './countries/countries.component';
     HomeComponent,
     NavMenuComponent,
     CitiesComponent,
-    CountriesComponent
+    CountriesComponent,
+    CityEditComponent
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule,
