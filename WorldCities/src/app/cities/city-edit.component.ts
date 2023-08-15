@@ -5,7 +5,6 @@ import { FormGroup, FormControl, Form } from '@angular/forms';
 
 import { environment } from './../../environments/environment';
 import { City } from './city';
-import { env } from 'process';
 
 @Component({
   selector: 'app-city-edit',

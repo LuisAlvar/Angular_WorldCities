@@ -14,6 +14,8 @@ import { CitiesComponent } from './cities/cities.component';
 import { CountriesComponent } from './countries/countries.component';
 import { CityEditComponent } from './cities/city-edit.component';
 
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +27,7 @@ import { CityEditComponent } from './cities/city-edit.component';
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule,
-    AngularMaterialModule
+    AngularMaterialModule, ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
