@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl, Form } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 
 import { environment } from './../../environments/environment';
 import { City } from './city';
@@ -19,9 +19,13 @@ export class CityEditComponent implements OnInit {
   // the form model
   form!: FormGroup;
 
-  // the city object to edit
+  // the city object to edit or create
   city?: City;
 
+  // the city object id, as fetched from the active route:
+  // It's NULL when we're adding a new city,
+  // and not NULL when we're editing an existing one
+  id?: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
