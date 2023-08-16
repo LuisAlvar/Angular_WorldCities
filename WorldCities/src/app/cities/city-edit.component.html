@@ -1,6 +1,6 @@
 <div class="city-edit">
   <h1>{{ title }}</h1>
-  <p *ngIf="!city"><em>Loading...</em></p>
+  <p *ngIf="this.id && !city"><em>Loading...</em></p>
   <div [formGroup]="form" (ngSubmit)="onSubmit()">
 
     <!--Name-->
@@ -23,7 +23,7 @@
 
     <div>
       <button mat-flat-button color="primary" type="submit">
-        Save
+        {{ this.id ? "Save" : "Create" }}
       </button>
       <button mat-flat-button color="secondary" [routerLink]="['/cities']">
         Cancel

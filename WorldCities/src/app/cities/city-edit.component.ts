@@ -43,40 +43,72 @@ export class CityEditComponent implements OnInit {
   }
 
   loadData() {
-
     // retrieve the ID from the id parameter
     var idParam = this.activatedRoute.snapshot.paramMap.get('id');
-    var id = idParam ? +idParam : 0;
+    console.log(idParam);
 
-    // fetch the city from the server
-    var url = environment.baseUrl + '/api/cities/' + id;
-    this.http.get<City>(url).subscribe(result => {
-      this.city = result;
-      this.title = "Edit - " + this.city.name;
+    this.id = idParam ? +idParam : 0;
+    console.log(this.id);
 
-      // update the form with the city value
-      this.form.patchValue(this.city);
+    if (this.id) {
+      // Edit Mode :: if this.id contains value
 
-    }, error => console.error(error));
+      // fetch the city from the server
+      var url = environment.baseUrl + '/api/cities/' + this.id;
+      this.http.get<City>(url).subscribe(result => {
+        this.city = result;
+        this.title = "Edit - " + this.city.name;
+
+        // update the form with the city value
+        this.form.patchValue(this.city);
+
+      }, error => console.error(error));
+    }
+    else {
+      // Add new mode :: if this.id is null
+
+      this.title = "Create a new City";
+    }
   }
 
   onSubmit() {
-    var city = this.city;
+    var city = (this.id) ? this.city : <City>{};
+
     if (city) {
       city.name = this.form.controls['name'].value;
       city.lat = +this.form.controls['lat'].value;
       city.lon = +this.form.controls['lon'].value;
 
-      var url = environment.baseUrl + '/api/cities/' + city.id;
+      if (this.id) {
+        // Edit mode 
+        var url = environment.baseUrl + '/api/cities/' + city.id;
 
-      this.http.put<City>(url, city).subscribe(result => {
-        console.log("City " + city!.id + " has been updated.");
+        this.http
+          .put<City>(url, city)
+          .subscribe(result => {
+            console.log("City " + city!.id + " has been updated.");
 
-        // go back to cities view
-        this.router.navigate(['/cities']);
-      }, error => console.error(error));
+            // go back to cities view
+            this.router.navigate(['/cities']);
+          }, error => console.error(error));
+
+      }
+      else {
+        // Add New mode
+        var url = environment.baseUrl + '/api/cities';
+
+        this.http
+          .post<City>(url, city)
+          .subscribe(result => {
+            console.log("City " + result.id + " has been created.");
+
+            // go back to cities view
+            this.router.navigate(['/cities']);
+          }, error => console.error(error));
+      }
     }
   }
+
 }
 
 // ng generate component CityEdit --flat --module=app --skip-tests
