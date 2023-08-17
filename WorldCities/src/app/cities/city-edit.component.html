@@ -21,6 +21,16 @@
       <input matInput formControlName="lon" required placeholder="Insert longitude" />
     </mat-form-field>
 
+    <!--Country-->
+    <p *ngIf="countries">
+      <select id="countryId" formControlName="countryId">
+        <option value="">--- Select a country ---</option>
+        <option *ngFor="let country of countries" [value]="country.id">
+          {{ country.name }}
+        </option>
+      </select>
+    </p>
+
     <div>
       <button mat-flat-button color="primary" type="submit">
         {{ this.id ? "Save" : "Create" }}
