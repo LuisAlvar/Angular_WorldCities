@@ -1,7 +1,7 @@
 <div class="city-edit">
   <h1>{{ title }}</h1>
   <p *ngIf="this.id && !city"><em>Loading...</em></p>
-  <div [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
     <!--Name-->
     <mat-form-field>
@@ -29,5 +29,5 @@
         Cancel
       </button>
     </div>
-  </div>
+  </form>
 </div>

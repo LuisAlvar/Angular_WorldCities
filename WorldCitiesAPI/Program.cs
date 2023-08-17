@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WorldCitiesAPI.Data;
+using Microsoft.AspNetCore.Cors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,16 @@ builder.Services
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// we will relax the CORS policy for any endpoint, for testing puporses only.
+// REMOVE: When deploying this app to production
+builder.Services.AddCors(opts => {
+  opts.AddPolicy(name: "AngularPolicy", cfg => {
+    cfg.AllowAnyHeader();
+    cfg.AllowAnyMethod();
+    cfg.WithOrigins(builder.Configuration["AllowedCORS"]);
+  });
+});
 
 var strConnection = builder.Configuration.GetConnectionString("DefaultConnection");
 Console.WriteLine("This is the connection string from .json " + strConnection);
@@ -34,6 +45,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("AngularPolicy");
 
 app.MapControllers();
 

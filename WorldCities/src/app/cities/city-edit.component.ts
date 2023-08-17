@@ -74,6 +74,8 @@ export class CityEditComponent implements OnInit {
   onSubmit() {
     var city = (this.id) ? this.city : <City>{};
 
+    console.log(city);
+
     if (city) {
       city.name = this.form.controls['name'].value;
       city.lat = +this.form.controls['lat'].value;
