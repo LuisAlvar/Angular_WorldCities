@@ -3,6 +3,10 @@
 
 <p *ngIf="!countries"><em>Loading....</em></p>
 
+<button mat-flat-button color="primary" class="btn-add" *ngIf="countries" [routerLink]="['/country']">
+  Add a new Country
+</button>
+
 <mat-form-field [hidden]="!countries">
   <input matInput #filter (keyup)="loadData(filter.value)" placeholder="Filter by name (or part of it) ..." />
 </mat-form-field>
