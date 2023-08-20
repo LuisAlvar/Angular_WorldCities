@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CitiesComponent } from './cities/cities.component';
 import { CountriesComponent } from './countries/countries.component';
 import { CityEditComponent } from './cities/city-edit.component';
+import { CountryEditComponent } from './countries/country-edit.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -23,7 +24,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     NavMenuComponent,
     CitiesComponent,
     CountriesComponent,
-    CityEditComponent
+    CityEditComponent,
+    CountryEditComponent
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule,

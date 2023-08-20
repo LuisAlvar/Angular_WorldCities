@@ -13,9 +13,6 @@ import { map } from 'rxjs/operators';
 // Component Items
 import { environment } from './../../environments/environment';
 import { Country } from './country';
-import { Route } from '@angular/compiler/src/core';
-import { env } from 'process';
-import { count } from 'console';
 
 @Component({
   selector: 'app-country-edit',
@@ -109,7 +106,7 @@ export class CountryEditComponent implements OnInit {
       else {
         // ADD NEW mode
 
-        var url = environment.baseUrl + "/api/countries/";
+        var url = environment.baseUrl + "/api/countries";
         this.http.post<Country>(url, country).subscribe(result => {
           console.log("Country " + result.id + " has been created.");
 
