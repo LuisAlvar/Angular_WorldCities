@@ -19,7 +19,7 @@ namespace WorldCitiesAPI.Controllers
 
         // GET: api/countries
         [HttpGet]
-        public async Task<ActionResult<ApiResult<Country>>> GetCountries(
+        public async Task<ActionResult<ApiResult<CountryDTO>>> GetCountries(
             int pageIndex = 0, 
             int pageSize = 10,
             string? sortColumn = null, 
@@ -27,21 +27,21 @@ namespace WorldCitiesAPI.Controllers
             string? filterColumn = null, 
             string? filterQuery = null)
         {
-          // first we perform the filtering ...
-          var countries = _context.Countries.AsNoTracking();
-
-          if (!string.IsNullOrEmpty(filterColumn)
-              && !string.IsNullOrEmpty(filterQuery))
-          {
-            countries = countries.Where(c => c.Name.StartsWith(filterQuery));
-          }
-
-          return await ApiResult<Country>.CreateAsync(
-              countries,
+          return await ApiResult<CountryDTO>.CreateAsync(
+              _context.Countries.AsNoTracking()
+                .Select(c => new CountryDTO(){
+                    Id = c.Id, 
+                    Name = c.Name,
+                    ISO2 = c.ISO2,
+                    ISO3 = c.ISO3, 
+                    TotCities = c.Cities!.Count
+                }),
               pageIndex,
               pageSize,
               sortColumn,
-              sortOrder);
+              sortOrder,
+              filterColumn,
+              filterQuery);
         }
 
         // GET: api/countries
