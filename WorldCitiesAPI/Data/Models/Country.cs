@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -39,10 +38,25 @@ namespace WorldCitiesAPI.Data.Models
 
         #endregion
 
+        #region Client-Side properties
+        [NotMapped]
+        public int TotCities
+        {
+          get
+          { 
+            return (Cities != null) ? Cities.Count : _TotCities;
+          }
+          set { _TotCities = value; }
+        }
+
+        private int _TotCities = 0;
+        #endregion
+
         #region Navigation Properties 
         /// <summary>
         /// A collection of all the cities related to this country
         /// </summary>
+        [JsonIgnore]
         public ICollection<City>? Cities { get; set; } = null!;
         #endregion
     }
