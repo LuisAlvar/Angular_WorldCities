@@ -17,6 +17,8 @@ import { CountryEditComponent } from './countries/country-edit.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { CityService } from './cities/city.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +33,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule,
     AngularMaterialModule, ReactiveFormsModule
   ],
-  providers: [],
+  providers: [ CityService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
