@@ -5,6 +5,7 @@ using System.Linq.Dynamic.Core;
 using System.Reflection;
 using System.Diagnostics.Contracts;
 using System.Net.NetworkInformation;
+using EFCore.BulkExtensions;
 
 namespace WorldCitiesAPI.Data
 {
@@ -163,6 +164,11 @@ namespace WorldCitiesAPI.Data
       var count = await source.CountAsync();
 
       source = source.Skip(pageIndex * pageSize).Take(pageSize);
+
+      #if DEBUG
+      // retrieve the SQL query ( for debug purposes )
+      var sql = source.ToParametrizedSql();
+      #endif
 
       if (!string.IsNullOrEmpty(sortColumn) && IsValidProperty(sortColumn))
       {

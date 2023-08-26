@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from './../../environments/environment';
@@ -38,12 +38,22 @@ export class CityEditComponent
   // the countries array for the select
   countries?: Country[]
 
+  // Actvitiy Log (for debugging purposes)
+  activityLog: string = '';
+
+  
+  private subscriptions: Subscription = new Subscription()
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private cityService: CityService
   ) {
     super();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   ngOnInit() {
@@ -54,7 +64,33 @@ export class CityEditComponent
       countryId: new FormControl('', Validators.required)
     }, null, this.isDupeCity());
 
+    // react to form changes
+    this.subscriptions.add(
+    this.form.valueChanges.subscribe(() => {
+      if (!this.form.dirty) {
+        this.log("Form Model has been loaded.");
+      }
+      else {
+        this.log("Form was updated by the user.");
+      }
+    }));
+
+    // react to change in the form.name control
+    this.subscriptions.add(
+      this.form.get("name")!.valueChanges.subscribe(() => {
+        if (!this.form.dirty) {
+          this.log("Name has been loaded with initial values.");
+        }
+        else {
+          this.log("Name was updated by the user.");
+        }
+      }));
+
     this.loadData();
+  }
+
+  log(str: string) {
+    this.activityLog += "[" + new Date().toLocaleString() + "] " + str + "<br />";
   }
 
   isDupeCity(): AsyncValidatorFn {
