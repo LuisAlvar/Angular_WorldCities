@@ -14,7 +14,7 @@ namespace WorldCitiesAPI.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        private readonly ILogger<CitiesController> _logger;
+        private readonly ILogger<CitiesController> _logger = null!;
 
         public CitiesController(ILogger<CitiesController> logger, ApplicationDbContext context) {
             _context = context;
@@ -22,6 +22,10 @@ namespace WorldCitiesAPI.Controllers
             _logger.LogInformation("CitiesController initialized.");
         }
 
+        public CitiesController(ApplicationDbContext context)
+        {
+          _context = context;
+        }
 
         // GET: api/Cities
         // GET: api/Cities/?pageIndex=0&pageSize=10
