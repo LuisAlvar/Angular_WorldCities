@@ -41,7 +41,7 @@ export class CityEditComponent
   // Actvitiy Log (for debugging purposes)
   activityLog: string = '';
 
-  
+  // Unsubscribing to the inifite observables to prevent memory leak
   private subscriptions: Subscription = new Subscription()
 
   constructor(
