@@ -12,9 +12,13 @@ namespace WorldCitiesAPI.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public CountriesController(ApplicationDbContext context)
+        private readonly ILogger<CountriesController> _logger;
+
+        public CountriesController(ILogger<CountriesController> logger, ApplicationDbContext context)
         { 
             _context = context;
+            _logger = logger;
+            _logger.LogInformation("CountriesController initialized");
         }
 
         // GET: api/countries
