@@ -17,8 +17,8 @@ describe('CitiesComponent', () => {
   let fixture: ComponentFixture<CitiesComponent>;
 
   beforeEach(async () => {
-    //TODO: declare & initialzie requried providers
 
+    //DONE: declare & initialzie requried providers
     //Create a mock CityService object with a mock 'getData' method
     let cityService = jasmine.createSpyObj<CityService>('CityService', ['getData']);
 
@@ -65,7 +65,11 @@ describe('CitiesComponent', () => {
         RouterTestingModule
       ],
       providers: [
-        //TODO: reference requried providers
+        //DONE: reference requried providers
+        {
+          provide: CityService,
+          useValue: cityService
+        }
       ]
     })
       .compileComponents();
@@ -77,7 +81,8 @@ describe('CitiesComponent', () => {
     fixture = TestBed.createComponent(CitiesComponent);
     component = fixture.componentInstance;
 
-    //TODO: configure fixture/component/children/etc.
+    //Done: configure fixture/component/children/etc.
+    component.paginator = jasmine.createSpyObj("MatPaginator", ["length", "pageIndex", "pageSize"]);
 
     fixture.detectChanges();
   });
@@ -86,7 +91,19 @@ describe('CitiesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  //TODO: implement some other tests
+  //DONE: implement some other tests
+  it('should display a "Cities" title', () => {
+    let title = fixture.nativeElement.querySelector('h1');
+    expect(title.textContent).toEqual('Cities');
+  })
+
+  it('should contain a table with a list of one or more cities', () => {
+    let table = fixture.nativeElement.querySelector('table.mat-table');
+    let tableRows = table.querySelectorAll('tr.mat-row');
+    expect(tableRows.length).toBeGreaterThan(0);
+  })
+
+
 
 
 });
