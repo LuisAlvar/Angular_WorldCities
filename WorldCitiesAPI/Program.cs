@@ -5,6 +5,9 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
 
+using WorldCitiesAPI.Data.Models;
+using Microsoft.AspNetCore.Identity;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,6 +28,18 @@ builder.Services
     //options.JsonSerializerOptions.WriteIndented = true;
     //options.JsonSerializerOptions.PropertyNamingPolicy = null;
   });
+
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+  options.SignIn.RequireConfirmedAccount = true;
+  options.Password.RequireDigit = true;
+  options.Password.RequireLowercase = true;
+  options.Password.RequireUppercase = true;
+  options.Password.RequireNonAlphanumeric = true;
+  options.Password.RequiredLength = 8;
+}).AddEntityFrameworkStores<ApplicationDbContext>();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
