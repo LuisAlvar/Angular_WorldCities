@@ -7,6 +7,9 @@ using Serilog.Sinks.MSSqlServer;
 
 using WorldCitiesAPI.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Writers;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +64,30 @@ Console.WriteLine("This is the connection string from .json " + strConnection);
 builder.Services
     .AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(strConnection));
 
+// First ASP.NET Core service that we create
+builder.Services.AddScoped<JwtHandler>();
+
+// Add Authentication services & middleware 
+builder.Services.AddAuthentication(opt => {
+  opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+  opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(opt => {
+
+  opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+  {
+    RequireExpirationTime = true,
+    ValidateIssuer = true,
+    ValidateAudience = true,
+    ValidateLifetime = true,
+    ValidateIssuerSigningKey = true,
+    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+    ValidAudience = builder.Configuration["JwtSettings:Audience"],
+    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecurityKey"]))
+  };
+});
+
+
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
@@ -74,6 +101,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors("AngularPolicy");
