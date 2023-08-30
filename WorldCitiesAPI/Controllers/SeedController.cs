@@ -1,20 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
-using System.Runtime;
 using System.Security;
-using System.Collections.Concurrent;
 using WorldCitiesAPI.Data;
 using WorldCitiesAPI.Data.Models;
-using System.Text.Json.Serialization;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WorldCitiesAPI.Controllers
 {
   [Route("api/[controller]/[action]")]
   [ApiController]
+  [Authorize(Roles = "Administrator")]
   public class SeedController: ControllerBase
   {
     private readonly ApplicationDbContext _context;
@@ -24,7 +21,12 @@ namespace WorldCitiesAPI.Controllers
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IConfiguration _configuration;
 
-    public SeedController(ApplicationDbContext context, IWebHostEnvironment env, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IConfiguration configuration)
+    public SeedController(
+      ApplicationDbContext context,
+      IWebHostEnvironment env,
+      RoleManager<IdentityRole> roleManager, 
+      UserManager<ApplicationUser> userManager,
+      IConfiguration configuration)
     { 
         _context = context;
         _env = env;
