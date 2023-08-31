@@ -97,6 +97,7 @@ export class CountryEditComponent
         this.countryService
           .put(country)
           .subscribe(result => {
+
           console.log("Country " + result.id + " has been updated.");
 
           // go back to conuntries view

@@ -66,30 +66,30 @@ namespace WorldCitiesAPI.Controllers
     [HttpPut("{id}")]
     public async Task<IActionResult> PutCountry(int id, Country country)
     {
-        if (id != country.Id)
-        { 
-            return BadRequest();
-        }
+      if (id != country.Id)
+      { 
+        return BadRequest();
+      }
 
-        _context.Entry(country).State = EntityState.Modified;
+      _context.Entry(country).State = EntityState.Modified;
 
-        try
+      try
+      {
+        await _context.SaveChangesAsync();
+           
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (!_context.Countries.Any(c => c.Id == id))
         {
-            await _context.SaveChangesAsync();
+            return NotFound(nameof(Country));
         }
-        catch (DbUpdateConcurrencyException)
+        else
         {
-            if (!_context.Countries.Any(c => c.Id == id))
-            {
-                return NotFound(nameof(Country));
-            }
-            else
-            {
-                throw;
-            }
+            throw;
         }
-
-        return NoContent();
+      }
+      return CreatedAtAction("GetCountry", new { id = country.Id }, country);
     }
 
 

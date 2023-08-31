@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -20,6 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CityService } from './cities/city.service';
 import { LoginComponent } from './auth/login.component';
 
+import { AuthInterceptor } from './auth/auth.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +37,14 @@ import { LoginComponent } from './auth/login.component';
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule,
     AngularMaterialModule, ReactiveFormsModule
   ],
-  providers: [ CityService ],
+  providers: [
+    CityService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
