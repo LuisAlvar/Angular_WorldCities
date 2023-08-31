@@ -20,11 +20,6 @@ namespace WorldCitiesAPI.Controllers
         _logger.LogInformation("CitiesController initialized.");
     }
 
-    public CitiesController(ApplicationDbContext context)
-    {
-      _context = context;
-    }
-
     // GET: api/Cities
     // GET: api/Cities/?pageIndex=0&pageSize=10
     // GET: api/Cities/?pageIndex=0&pageSize=10&sortColumn=name&
