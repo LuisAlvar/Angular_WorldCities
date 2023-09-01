@@ -1,12 +1,24 @@
-FROM node:16.14 AS client
-EXPOSE 4200 49153
-USER node
+# syntax=docker/dockerfile:1.4
 
-RUN mkdir /home/node/.npm-global
-ENV PATH=/home/node/.npm-global/bin:$PATH
-ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
-
+FROM node as builder
+WORKDIR /app
+EXPOSE 90
 RUN npm install -g @angular/cli@13.0.1
 
-WORKDIR /app
-CMD ["ng","serve", "--port", "4200", "--host","0.0.0.0","--disable-host-check","--poll","2000"]
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm ci
+COPY  . .
+CMD ["node","aspnetcore-https"]
+CMD ["ng","serve","--ssl","-ssl-cert", "%APPDATA%\\ASP.NET\\https\\%npm_package_name%.pem", "--ssl-key","%APPDATA%\\ASP.NET\\https\\%npm_package_name%.key","--host=90"]
+
+FROM builder as dev-envs
+RUN apt-get update && \
+  apt-get install -y --no-install-recommends git && \
+  useradd -s /bin/bash -m vscode &&\
+  groupadd docker && \
+  usermod -aG docker vscode
+
+COPY --from=gloursdocker/docker / /
+
+CMD ["npm", "start"]
