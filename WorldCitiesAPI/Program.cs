@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Writers;
 using Microsoft.IdentityModel.Tokens;
+using WorldCitiesAPI.Data.GraphQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,6 +68,14 @@ builder.Services
 // First ASP.NET Core service that we create
 builder.Services.AddScoped<JwtHandler>();
 
+//GraphQL 
+builder.Services.AddGraphQLServer()
+  .AddAuthorization()
+  .AddQueryType<Query>()
+  .AddMutationType<Mutation>()
+  .AddFiltering()
+  .AddSorting();
+
 // Add Authentication services & middleware 
 builder.Services.AddAuthentication(opt => {
   opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -107,6 +116,8 @@ app.UseAuthorization();
 app.UseCors("AngularPolicy");
 
 app.MapControllers();
+
+app.MapGraphQL("/api/graphql");
 
 app.MapMethods("api/heartbeat", new[] { "HEAD" }, () => Results.Ok());
 

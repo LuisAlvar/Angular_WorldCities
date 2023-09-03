@@ -6,6 +6,7 @@ using WorldCitiesAPI.Data;
 using WorldCitiesAPI.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Path = System.IO.Path;
 
 namespace WorldCitiesAPI.Controllers
 {
