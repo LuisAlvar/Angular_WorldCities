@@ -28,7 +28,7 @@ import { ConnectionServiceModule, ConnectionServiceOptions, ConnectionServiceOpt
 //import { APOLLO_OPTIONS } from 'apollo-angular';
 //import { HttpLink } from 'apollo-angular/http';
 //import { InMemoryCache } from '@apollo/client/core';
-//import { GraphQLModule } from './graphql.module';
+
 
 @NgModule({
   declarations: [
@@ -65,6 +65,7 @@ import { ConnectionServiceModule, ConnectionServiceOptions, ConnectionServiceOpt
         heartbeatUrl: environment.baseUrl + "/api/heartbeat",
       }
     }
+    //,
     //{
     //  provide: APOLLO_OPTIONS,
     //  useFactory: (httpLink: HttpLink) => {

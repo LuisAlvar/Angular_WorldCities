@@ -18,9 +18,8 @@
     "target": "es2017",
     "module": "es2020",
     "lib": [
-      "es2020",
-      "dom",
-      "esnext.asynciterable"
+      "es2018",
+      "dom"
     ],
     "allowSyntheticDefaultImports": true
   },
